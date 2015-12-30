@@ -10,6 +10,7 @@ var clean = require('gulp-clean');
 var minifyCSS = require('gulp-minify-css');
 var karma = require('karma').server;
 var browserify = require('gulp-browserify');
+var angularProtractor = require('gulp-angular-protractor');
 
 gulp.task('connect', function() {
     connect.server({
@@ -95,4 +96,19 @@ gulp.task('tdd', function (done) {
     }, done);
 });
 
-// TODO: protractor tests
+// run protractor tests
+gulp.task('protractor', function (callback) {
+    gulp.src('tests-e2e/*.spec.js')
+        .pipe(angularProtractor({
+            'configFile': 'tests-e2e/protractor.conf.js',
+            'debug': false,
+            'autoStartStopServer': true
+        }))
+        .on('error', function(e) {
+            console.log(e);
+        })
+        .on('end', callback);
+});
+
+// run all tests
+gulp.task('test', ['unit', 'protractor']);
