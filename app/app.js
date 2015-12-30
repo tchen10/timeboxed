@@ -39,7 +39,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
             templateUrl: 'features/view2/view2.html'
         });
 
-    $urlRouterProvider.otherwise('/view1');
+    $urlRouterProvider.otherwise('/tasks');
 }]);
 
 app.constant('FirebaseUrl', 'https://timeboxed.firebaseio.com/');
