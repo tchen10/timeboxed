@@ -12,7 +12,8 @@ require('./components');
 var app = angular.module('timeboxed', [
     'ui.router',
     'timeboxed.version',
-    'timeboxed.task'
+    'timeboxed.task',
+    'timeboxed.view1'
 ]);
 
 app.config(['$stateProvider', '$urlRouterProvider',
@@ -30,7 +31,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
         .state('view1', {
             url: '/view1',
             templateUrl: 'features/view1/view1.html',
-            controller: require('./features/view1/view1.js').inject(app)
+            controller: 'View1Ctrl'
         })
         .state('view2', {
             url: '/view2',

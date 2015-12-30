@@ -1,10 +1,7 @@
 'use strict';
 
-exports.inject = function(app) {
-    app.controller('View1Ctrl', exports.controller);
-    return exports.controller;
-};
+angular.module('timeboxed.view1', [])
 
-exports.controller = function() {
-    return {doStuff: function() {}};
-};
+.controller('View1Ctrl', [function() {
+
+}]);
