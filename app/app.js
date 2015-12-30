@@ -11,7 +11,8 @@ require('./components');
 
 var app = angular.module('timeboxed', [
     'ui.router',
-    'timeboxed.version'
+    'timeboxed.version',
+    'timeboxed.task'
 ]);
 
 app.config(['$stateProvider', '$urlRouterProvider',
@@ -20,9 +21,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
         .state('tasks', {
             url: '/tasks',
             templateUrl: 'features/task/task.html',
-            controller: function($scope) {
-                $scope.tasks = ["A", "List", "Of", "Tasks"];
-             }
+            controller: 'TaskCtrl'
         })
         .state('tasks.addTask', {
             url: '/addTask',
