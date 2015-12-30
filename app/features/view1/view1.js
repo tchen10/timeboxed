@@ -1,7 +1,10 @@
 'use strict';
 
-angular.module('timeboxed.view1', [])
+exports.inject = function(app) {
+    app.controller('View1Ctrl', exports.controller);
+    return exports.controller;
+};
 
-.controller('View1Ctrl', [function() {
-
-}]);
+exports.controller = function() {
+    return {doStuff: function() {}};
+};

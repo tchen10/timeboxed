@@ -9,28 +9,25 @@ require('firebase');
 require('./features');
 require('./components');
 
-angular.module('timeboxed', [
+var app = angular.module('timeboxed', [
     'ui.router',
-    'timeboxed.view1',
-    'timeboxed.view2',
     'timeboxed.version'
-])
+]);
 
-.config(['$stateProvider', '$urlRouterProvider',
+app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('view1', {
             url: '/view1',
             templateUrl: 'features/view1/view1.html',
-            controller: 'View1Ctrl'
+            controller: require('./features/view1/view1.js').inject(app)
         })
         .state('view2', {
             url: '/view2',
-            templateUrl: 'features/view2/view2.html',
-            controller: 'View2Ctrl'
+            templateUrl: 'features/view2/view2.html'
         });
 
     $urlRouterProvider.otherwise('/view1');
-}])
+}]);
 
-.constant('FirebaseUrl', 'https://timeboxed.firebaseio.com/');
+app.constant('FirebaseUrl', 'https://timeboxed.firebaseio.com/');

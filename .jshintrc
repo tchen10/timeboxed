@@ -11,6 +11,7 @@
     "inject": false,
     "require": false,
     "config": false,
-    "__dirname": false
+    "__dirname": false,
+    "exports": false
   }
 }
