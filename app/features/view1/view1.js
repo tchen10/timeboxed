@@ -1,13 +1,6 @@
 'use strict';
 
-angular.module('timeboxed.view1', ['ngRoute'])
-
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view1', {
-    templateUrl: 'features/view1/view1.html',
-    controller: 'View1Ctrl'
-  });
-}])
+angular.module('timeboxed.view1', [])
 
 .controller('View1Ctrl', [function() {
 
