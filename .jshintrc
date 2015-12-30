@@ -12,6 +12,7 @@
     "require": false,
     "config": false,
     "__dirname": false,
-    "exports": false
+    "exports": false,
+    "console": false
   }
 }

@@ -4,8 +4,8 @@ require('angular');
 require('angular-mocks');
 require('angular-ui-router');
 require('angular-loader');
-require('angularfire');
 require('firebase');
+require('angularfire');
 require('./features');
 require('./components');
 
@@ -26,7 +26,8 @@ app.config(['$stateProvider', '$urlRouterProvider',
         })
         .state('tasks.addTask', {
             url: '/addTask',
-            templateUrl: 'features/task/_addTask.html'
+            templateUrl: 'features/task/_addTask.html',
+            controller: 'TaskCtrl'
         })
         .state('view1', {
             url: '/view1',

@@ -1,1 +1,15 @@
 <p>A form to add a task</p>
+
+<form ng-submit="addTask()">
+    <div>
+        <label>Task</label>
+        <input type="text" ng-model="task.title" />
+    </div>
+
+    <div>
+        <label>Estimated Time</label>
+        <input type="text" ng-model="task.estimate" />
+    </div>
+
+    <input type="submit" />
+</form>

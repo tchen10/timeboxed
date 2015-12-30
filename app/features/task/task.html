@@ -1,7 +1,7 @@
 <p>Here are some tasks!</p>
 
 <ul ng-repeat="task in tasks">
-    <li>{{ task }}</li>
+    <li>{{ task.title }} - {{task.estimate}} </li>
 </ul>
 
 <div ui-view>

@@ -7,3 +7,4 @@ tmp
 .idea
 dist/
 app/bundled.js
+seed.json
