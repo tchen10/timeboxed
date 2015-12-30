@@ -17,6 +17,17 @@ var app = angular.module('timeboxed', [
 app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
     $stateProvider
+        .state('tasks', {
+            url: '/tasks',
+            templateUrl: 'features/task/task.html',
+            controller: function($scope) {
+                $scope.tasks = ["A", "List", "Of", "Tasks"];
+             }
+        })
+        .state('tasks.addTask', {
+            url: '/addTask',
+            templateUrl: 'features/task/_addTask.html'
+        })
         .state('view1', {
             url: '/view1',
             templateUrl: 'features/view1/view1.html',
