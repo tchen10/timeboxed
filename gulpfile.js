@@ -73,7 +73,7 @@ gulp.task('watch', function() {
     gulp.watch(['app/**/*.css', '!./app/bower_components/**'], ['minify-css']);
 });
 
-gulp.task('default', ['lint', 'clean', 'browserify', 'watch', 'connect']);
+gulp.task('default', ['lint', 'browserify', 'watch', 'connect']);
 
 gulp.task('build', ['lint', 'minify-css', 'minify-js', 'copy-html-files', 'copy-bower-components']);
 
