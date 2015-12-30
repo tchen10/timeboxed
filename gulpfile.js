@@ -3,16 +3,16 @@
 var gulp = require('gulp');
 var connect = require('gulp-connect');
 var jshint = require('gulp-jshint');
-var concat = require('gulp-concat');
-var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
-var clean = require('gulp-clean');
-var minifyCSS = require('gulp-minify-css');
-var karma = require('karma').server;
-var browserify = require('gulp-browserify');
+var del = require('del');
+var nano = require('gulp-cssnano');
 var angularProtractor = require('gulp-angular-protractor');
 var gutil = require('gulp-util');
+var karma = require('karma').server;
 var runSequence = require('run-sequence');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 
 gulp.task('connect', function() {
     connect.server({
@@ -29,40 +29,22 @@ gulp.task('connectDist', function() {
 });
 
 gulp.task('clean', function() {
-    gulp.src('dist/*')
-        .pipe(clean({force: true}));
-    gulp.src('app/bundled.js')
-        .pipe(clean({force: true}));
-    gulp.src('app/combined.js')
-        .pipe(clean({force: true}));
+    return del([
+        'dist/*',
+        'app/bundle.js'
+    ]);
 });
 
 gulp.task('lint', function() {
-    gulp.src(['app/**/*.js', '!app/bower_components/**', '!app/bundled.js', '!app/combined.js'])
+    gulp.src(['app/**/*.js', '!app/bower_components/**', '!app/bundle.js'])
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('minify-js', function() {
-   gulp.src(['app/**/*.js', '!app/bower_components/**'])
-      .pipe(concat('combined.js'))
-      .pipe(gulp.dest('app/'));
-});
-
-gulp.task('minify-js-dist', function() {
-   gulp.src(['app/**/*.js', '!app/bower_components/**'])
-      .pipe(concat('combined.js'))
-      .pipe(gulp.dest('dist/'))
-      .pipe(rename('combined.min.js'))
-      .pipe(uglify())
-      .pipe(gulp.dest('dist/'));
-});
-
 gulp.task('minify-css-dist', function() {
-    var opts = {comments:true,spare:true};
-    gulp.src(['app/**/*.css', '!./app/bower_components/**'])
-        .pipe(minifyCSS(opts))
+    return gulp.src(['app/**/*.css', '!./app/bower_components/**'])
+        .pipe(nano())
         .pipe(gulp.dest('dist/'));
 });
 
@@ -77,22 +59,28 @@ gulp.task('copy-html-files', ['clean'], function () {
 });
 
 gulp.task('browserify', function() {
-    gulp.src(['app/app.js'])
-        .pipe(browserify({
-            insertGlobals: true,
-            debug: true
-        }))
-        .pipe(concat('bundled.js'))
+    return browserify('app/app.js')
+        .bundle()
+        .pipe(source('bundle.js'))
         .pipe(gulp.dest('app/'));
 });
 
-gulp.task('watch', function() {
-    gulp.watch(['app/**/*.js', '!app/bower_components/**', '!app/bundled.js'], ['lint', 'minify-js']);
+gulp.task('browserify-dist', function() {
+    return browserify('app/app.js')
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('dev', ['lint', 'browserify', 'minify-js', 'watch', 'connect']);
+gulp.task('watch', function() {
+    gulp.watch(['app/**/*.js', '!app/bower_components/**'], ['browserify']);
+});
 
-gulp.task('prod', ['lint', 'minify-css-dist', 'browserify', 'minify-js-dist', 'copy-html-files', 'copy-bower-components', 'connectDist']);
+gulp.task('dev', ['lint', 'browserify', 'watch', 'connect']);
+
+gulp.task('prod', ['lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components', 'connectDist']);
 
 
 // TESTING
@@ -114,7 +102,6 @@ gulp.task('tdd', function (done) {
 
 // run protractor tests
 gulp.task('protractor', function (callback) {
-    gutil.log("**RUNNING PROTRACTOR TESTS**");
     gulp.src('tests-e2e/*.spec.js')
         .pipe(angularProtractor({
             'configFile': 'tests-e2e/protractor.conf.js',

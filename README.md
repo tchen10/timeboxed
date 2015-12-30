@@ -2,55 +2,32 @@
 
 ### Install Dependencies
 
-We have two kinds of dependencies in this project: tools and angular framework code.  The tools help
-us manage and test the application.
-
-* We get the tools we depend upon via `npm`, the [node package manager][npm].
-* We get the angular code via `bower`, a [client-side code package manager][bower].
-
 We have preconfigured `npm` to automatically run `bower` so we can simply do:
 
 ```
 npm install
 ```
 
-Behind the scenes this will also call `bower install`.  You should find that you have two new
-folders in your project.
-
-* `node_modules` - contains the npm packages for the tools we need
-* `app/bower_components` - contains the angular framework files
-
-*Note that the `bower_components` folder would normally be installed in the root folder but
-angular-seed changes this location through the `.bowerrc` file.  Putting it in the app folder makes
-it easier to serve the files by a webserver.*
-
 ### Run the Application
 
-To start the server, run:
+To start the app in dev mode:
 
 ```
-gulp connect
+gulp dev
 ```
 
 and navigate to http://localhost:8888/
 
-To do a clean build in dev mode and start the server:
+To start the app in prod mode:
 
 ```
-gulp clean
-gulp dev
-```
-
-To do a clean build in prod mode and start the server:
-
-```
-gulp clean
 gulp prod
 ```
 
+and navigate to http://localhost:9999/
+
 ## Testing
 
-There are two kinds of tests in the angular-seed application: Unit tests and End to End tests.
 
 ### Running Unit Tests
 
@@ -72,8 +49,10 @@ Protractor simulates interaction with our web app and verifies that the applicat
 correctly. Therefore, our web server needs to be serving up the application, so that Protractor
 can interact with it.
 
+Bring up the server:
+
 ```
-gulp
+gulp dev
 ```
 
 Run the protractor tests:
@@ -84,10 +63,6 @@ gulp protractor
 
 
 ## Updating Angular
-
-Previously we recommended that you merge in changes to angular-seed into your own fork of the project.
-Now that the angular framework library code and tools are acquired through package managers (npm and
-bower) you can use these tools instead to update the dependencies.
 
 You can update the tool dependencies by running:
 

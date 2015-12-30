@@ -1,5 +1,14 @@
 'use strict';
 
+require('angular');
+require('angular-mocks');
+require('angular-route');
+require('angular-loader');
+require('angularfire');
+require('firebase');
+require('./features');
+require('./components');
+
 angular.module('timeboxed', [
   'ngRoute',
   'timeboxed.view1',
