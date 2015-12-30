@@ -11,6 +11,8 @@ var minifyCSS = require('gulp-minify-css');
 var karma = require('karma').server;
 var browserify = require('gulp-browserify');
 var angularProtractor = require('gulp-angular-protractor');
+var gutil = require('gulp-util');
+var runSequence = require('run-sequence');
 
 gulp.task('connect', function() {
     connect.server({
@@ -19,37 +21,52 @@ gulp.task('connect', function() {
     });
 });
 
+gulp.task('connectDist', function() {
+    connect.server({
+    root: 'dist/',
+    port: 9999
+    });
+});
+
 gulp.task('clean', function() {
     gulp.src('dist/*')
         .pipe(clean({force: true}));
-    gulp.src('app/bundled.js*')
+    gulp.src('app/bundled.js')
+        .pipe(clean({force: true}));
+    gulp.src('app/combined.js')
         .pipe(clean({force: true}));
 });
 
-gulp.task('lint', ['clean'], function() {
-    gulp.src(['app/**/*.js', '!app/bower_components/**', '!app/bundled.js'])
+gulp.task('lint', function() {
+    gulp.src(['app/**/*.js', '!app/bower_components/**', '!app/bundled.js', '!app/combined.js'])
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('minify-js', ['clean'], function() {
+gulp.task('minify-js', function() {
    gulp.src(['app/**/*.js', '!app/bower_components/**'])
       .pipe(concat('combined.js'))
-      .pipe(gulp.dest('dist'))
+      .pipe(gulp.dest('app/'));
+});
+
+gulp.task('minify-js-dist', function() {
+   gulp.src(['app/**/*.js', '!app/bower_components/**'])
+      .pipe(concat('combined.js'))
+      .pipe(gulp.dest('dist/'))
       .pipe(rename('combined.min.js'))
       .pipe(uglify())
       .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('minify-css', ['clean'], function() {
+gulp.task('minify-css-dist', function() {
     var opts = {comments:true,spare:true};
     gulp.src(['app/**/*.css', '!./app/bower_components/**'])
         .pipe(minifyCSS(opts))
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('copy-bower-components', ['clean'], function () {
+gulp.task('copy-bower-components', function () {
     gulp.src('app/bower_components/**')
         .pipe(gulp.dest('dist/bower_components'));
 });
@@ -71,12 +88,11 @@ gulp.task('browserify', function() {
 
 gulp.task('watch', function() {
     gulp.watch(['app/**/*.js', '!app/bower_components/**', '!app/bundled.js'], ['lint', 'minify-js']);
-    gulp.watch(['app/**/*.css', '!./app/bower_components/**'], ['minify-css']);
 });
 
-gulp.task('default', ['lint', 'browserify', 'watch', 'connect']);
+gulp.task('dev', ['lint', 'browserify', 'minify-js', 'watch', 'connect']);
 
-gulp.task('build', ['lint', 'minify-css', 'minify-js', 'copy-html-files', 'copy-bower-components']);
+gulp.task('prod', ['lint', 'minify-css-dist', 'browserify', 'minify-js-dist', 'copy-html-files', 'copy-bower-components', 'connectDist']);
 
 
 // TESTING
@@ -98,6 +114,7 @@ gulp.task('tdd', function (done) {
 
 // run protractor tests
 gulp.task('protractor', function (callback) {
+    gutil.log("**RUNNING PROTRACTOR TESTS**");
     gulp.src('tests-e2e/*.spec.js')
         .pipe(angularProtractor({
             'configFile': 'tests-e2e/protractor.conf.js',
@@ -105,10 +122,15 @@ gulp.task('protractor', function (callback) {
             'autoStartStopServer': true
         }))
         .on('error', function(e) {
-            console.log(e);
+            gutil.log(e);
         })
         .on('end', callback);
 });
 
 // run all tests
-gulp.task('test', ['unit', 'protractor']);
+gulp.task('test', function() {
+    runSequence(
+        ['unit'],
+        ['protractor']
+    );
+});

@@ -34,10 +34,18 @@ gulp connect
 
 and navigate to http://localhost:8888/
 
-Use gulp's default task to do a clean build and start the server as defined in the gulpfile.
+To do a clean build in dev mode and start the server:
 
 ```
-gulp
+gulp clean
+gulp dev
+```
+
+To do a clean build in prod mode and start the server:
+
+```
+gulp clean
+gulp prod
 ```
 
 ## Testing
