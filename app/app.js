@@ -14,7 +14,10 @@ angular.module('timeboxed', [
   'timeboxed.view1',
   'timeboxed.view2',
   'timeboxed.version'
-]).
-config(['$routeProvider', function($routeProvider) {
+])
+
+.config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
+}])
+
+.constant('FirebaseUrl', 'https://timeboxed.firebaseio.com/');
