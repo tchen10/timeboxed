@@ -17,6 +17,7 @@
     "expect": false,
     "by": false,
     "browser": false,
-    "element": false
+    "element": false,
+    "MockFirebase": false
   }
 }

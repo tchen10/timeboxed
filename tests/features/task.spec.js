@@ -13,6 +13,7 @@ describe('timeboxed.task module', function() {
                 scope = $rootScope.$new();
                 taskCtrl = $controller('TaskCtrl', {$scope: scope});
             });
+            MockFirebase.override();
         });
 
         it('should create tasks array in scope', function() {
