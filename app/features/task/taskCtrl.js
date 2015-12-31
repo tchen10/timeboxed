@@ -19,7 +19,7 @@ angular.module('timeboxed.task.task-controller', [require('angularfire')])
             // Add error message
         });
 
-        $scope.task.title = "";
-        $scope.task.estimate = "";
+        $scope.task.title = '';
+        $scope.task.estimate = '';
     };
 }]);

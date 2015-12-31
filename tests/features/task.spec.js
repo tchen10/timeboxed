@@ -25,9 +25,25 @@ describe('timeboxed.task module', function() {
 
         it('should add a task to tasks array', function() {
             scope.task = {};
-            scope.task.title = "expected title";
-            scope.task.estimate = "expected estimate";
+            scope.task.title = 'expected title';
+            scope.task.estimate = 'expected estimate';
+            var newTask = scope.addTask(scope.task);
+            scope.$digest();
 
+            expect(scope.tasks.length).toBe(1);
+            expect(scope.tasks[0].title).toBe('expected title');
+            expect(scope.tasks[0].estimate).toBe('expected estimate');
+        });
+
+        it('should clear task fields after adding task', function() {
+            scope.task = {};
+            scope.task.title = 'expected title';
+            scope.task.estimate = 'expected estimate';
+            var newTask = scope.addTask(scope.task);
+            scope.$digest();
+
+            expect(scope.task.title).toBe('');
+            expect(scope.task.estimate).toBe('');
         });
     });
 });
