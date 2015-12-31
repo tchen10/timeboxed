@@ -6,5 +6,5 @@ tmp
 .DS_Store
 .idea
 dist/
-app/bundled.js
+app/bundle.js
 seed.json

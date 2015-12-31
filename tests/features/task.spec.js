@@ -1,24 +1,33 @@
 'use strict';
 
 describe('timeboxed.task module', function() {
-    beforeEach(module('timeboxed.task.task-controller'));
+    beforeEach(module('timeboxed.task'));
 
     describe('task controller', function() {
-        var taskCtrl, $scope;
+        var taskCtrl, scope;
+
+        beforeEach(module('timeboxed.task.task-controller'));
 
         beforeEach(function() {
-            inject(function($controller) {
-                $scope = {};
-                taskCtrl = $controller('TaskCtrl', {$scope: $scope});
+            inject(function($controller, $rootScope) {
+                scope = $rootScope.$new();
+                taskCtrl = $controller('TaskCtrl', {$scope: scope});
             });
         });
 
         it('should create tasks array in scope', function() {
-          expect(Object.prototype.toString.call($scope.tasks)).toBe('[object Array]');
+          expect(Object.prototype.toString.call(scope.tasks)).toBe('[object Array]');
         });
 
         it('should define addTask method', function() {
-          expect(typeof $scope.addTask).toBe('function');
+          expect(typeof scope.addTask).toBe('function');
+        });
+
+        it('should add a task to tasks array', function() {
+            scope.task = {};
+            scope.task.title = "expected title";
+            scope.task.estimate = "expected estimate";
+
         });
     });
 });
