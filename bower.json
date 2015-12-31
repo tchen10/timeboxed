@@ -6,6 +6,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "html5-boilerplate": "~5.2.0"
+    "html5-boilerplate": "~5.2.0",
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.6"
   }
 }
