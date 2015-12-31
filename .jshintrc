@@ -13,6 +13,10 @@
     "config": false,
     "__dirname": false,
     "exports": false,
-    "console": false
+    "console": false,
+    "expect": false,
+    "by": false,
+    "browser": false,
+    "element": false
   }
 }
