@@ -25,8 +25,13 @@ app.config(['$stateProvider', '$urlRouterProvider',
             controller: 'TaskCtrl'
         })
         .state('tasks.addTask', {
-            url: '/addTask',
+            url: '/add',
             templateUrl: 'features/task/_addTask.html',
+            controller: 'TaskCtrl'
+        })
+        .state('tasks.editTask', {
+            url: '/edit',
+            templateUrl: 'features/task/_editTask.html',
             controller: 'TaskCtrl'
         })
         .state('view1', {

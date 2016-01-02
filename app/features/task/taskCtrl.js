@@ -22,4 +22,13 @@ angular.module('timeboxed.task.task-controller', [require('angularfire')])
         $scope.task.title = '';
         $scope.task.estimate = '';
     };
+
+    $scope.editTask = function(id) {
+        $scope.taskToUpdate = $scope.tasks.$getRecord(id);
+    };
+
+    $scope.updateTask = function() {
+        $scope.tasks.$save($scope.taskToUpdate);
+    };
+
 }]);

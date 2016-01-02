@@ -20,31 +20,67 @@ describe('timeboxed.task module', function() {
           expect(Object.prototype.toString.call(scope.tasks)).toBe('[object Array]');
         });
 
-        it('should define addTask method', function() {
-          expect(typeof scope.addTask).toBe('function');
+        describe('addTask', function() {
+            it('should add a task to tasks array', function() {
+                scope.task = {};
+                scope.task.title = 'add title';
+                scope.task.estimate = 'add estimate';
+                scope.addTask(scope.task);
+                scope.$digest();
+
+                expect(scope.tasks.length).toBe(1);
+                expect(scope.tasks[0].title).toBe('add title');
+                expect(scope.tasks[0].estimate).toBe('add estimate');
+            });
+
+            it('should clear task fields after adding task', function() {
+                scope.task = {};
+                scope.task.title = 'expected title';
+                scope.task.estimate = 'expected estimate';
+                scope.addTask(scope.task);
+                scope.$digest();
+
+                expect(scope.task.title).toBe('');
+                expect(scope.task.estimate).toBe('');
+            });
         });
 
-        it('should add a task to tasks array', function() {
-            scope.task = {};
-            scope.task.title = 'expected title';
-            scope.task.estimate = 'expected estimate';
-            var newTask = scope.addTask(scope.task);
-            scope.$digest();
+        describe('editTask', function() {
+            var id;
 
-            expect(scope.tasks.length).toBe(1);
-            expect(scope.tasks[0].title).toBe('expected title');
-            expect(scope.tasks[0].estimate).toBe('expected estimate');
+            beforeEach(function() {
+                scope.tasks.$add({
+                    title: 'task',
+                    estimate: 'estimate'
+                });
+                scope.$digest();
+
+                id = scope.tasks[0].$id;
+            });
+
+            it('should get task to be edited', function() {
+                scope.editTask(id);
+                scope.$digest();
+
+                expect(scope.tasks[0].title).toBe('task');
+            });
+
+            it('should update task', function() {
+                scope.editTask(id);
+                scope.$digest();
+
+                scope.taskToUpdate.title = 'updated task';
+                scope.taskToUpdate.estimate = 'updated estimate';
+
+                expect(scope.tasks[0].title).toBe('updated task');
+            });
         });
 
-        it('should clear task fields after adding task', function() {
-            scope.task = {};
-            scope.task.title = 'expected title';
-            scope.task.estimate = 'expected estimate';
-            var newTask = scope.addTask(scope.task);
-            scope.$digest();
-
-            expect(scope.task.title).toBe('');
-            expect(scope.task.estimate).toBe('');
+        afterEach(function() {
+            scope.tasks.$remove(scope.tasks[0]).then(function(ref) {
+                ref.key() === scope.tasks[0].$id;
+            });
         });
+
     });
 });
