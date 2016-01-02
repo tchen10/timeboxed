@@ -31,4 +31,8 @@ angular.module('timeboxed.task.task-controller', [require('angularfire')])
         $scope.tasks.$save($scope.taskToUpdate);
     };
 
+    $scope.deleteTask = function(id) {
+        $scope.tasks.$remove($scope.tasks.$getRecord(id));
+    };
+
 }]);

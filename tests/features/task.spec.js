@@ -76,6 +76,24 @@ describe('timeboxed.task module', function() {
             });
         });
 
+        describe('deleteTask', function() {
+            it('should delete task', function() {
+                scope.tasks.$add({
+                    title: 'task',
+                    estimate: 'estimate'
+                });
+                scope.$digest();
+
+                var id = scope.tasks[0].$id;
+
+                scope.deleteTask(id);
+                scope.$digest();
+
+                expect(scope.tasks.length).toBe(0);
+                expect(scope.tasks.$getRecord(id)).toBeNull();
+            });
+        });
+
         afterEach(function() {
             scope.tasks.$remove(scope.tasks[0]).then(function(ref) {
                 ref.key() === scope.tasks[0].$id;
