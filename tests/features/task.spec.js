@@ -4,14 +4,14 @@ describe('timeboxed.task module', function() {
     beforeEach(module('timeboxed.task'));
 
     describe('task controller', function() {
-        var taskCtrl, scope;
-
-        beforeEach(module('timeboxed.task.task-controller'));
+        var taskCtrl, scope, state;
 
         beforeEach(function() {
+            module('timeboxed.task.task-controller');
             inject(function($controller, $rootScope) {
                 scope = $rootScope.$new();
-                taskCtrl = $controller('TaskCtrl', {$scope: scope});
+                state = {};
+                taskCtrl = $controller('TaskCtrl', {$scope: scope, $state: state});
             });
             MockFirebase.override();
         });
@@ -72,6 +72,8 @@ describe('timeboxed.task module', function() {
                 scope.taskToUpdate.title = 'updated task';
                 scope.taskToUpdate.estimate = 'updated estimate';
 
+                scope.updateTask();
+
                 expect(scope.tasks[0].title).toBe('updated task');
             });
         });
@@ -95,9 +97,7 @@ describe('timeboxed.task module', function() {
         });
 
         afterEach(function() {
-            scope.tasks.$remove(scope.tasks[0]).then(function(ref) {
-                ref.key() === scope.tasks[0].$id;
-            });
+            scope.tasks.$remove(scope.tasks[0]);
         });
 
     });

@@ -4,7 +4,7 @@ var Firebase = require('firebase');
 
 angular.module('timeboxed.task.task-controller', [require('angularfire')])
 
-.controller('TaskCtrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) {
+.controller('TaskCtrl', ['$scope', '$state', '$firebaseArray', function($scope, $state, $firebaseArray) {
     var ref = new Firebase('https://timeboxed.firebaseio.com/Tasks');
     $scope.tasks = $firebaseArray(ref);
 
@@ -24,11 +24,20 @@ angular.module('timeboxed.task.task-controller', [require('angularfire')])
     };
 
     $scope.editTask = function(id) {
-        $scope.taskToUpdate = $scope.tasks.$getRecord(id);
+        var task = $scope.tasks.$getRecord(id);
+        $scope.taskToUpdate = {};
+        $scope.taskToUpdate.id = task.$id;
+        $scope.taskToUpdate.title = task.title;
+        $scope.taskToUpdate.estimate = task.estimate;
     };
 
     $scope.updateTask = function() {
-        $scope.tasks.$save($scope.taskToUpdate);
+        var task = $scope.tasks.$getRecord($scope.taskToUpdate.id);
+        task.title = $scope.taskToUpdate.title;
+        task.estimate = $scope.taskToUpdate.estimate;
+        $scope.tasks.$save(task).then(function() {
+            $state.go('tasks');
+        });
     };
 
     $scope.deleteTask = function(id) {

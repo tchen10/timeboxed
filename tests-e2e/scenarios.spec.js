@@ -25,6 +25,10 @@ describe('timeboxed', function() {
 
       var taskList = element.all(by.repeater('task in tasks'));
       expect(taskList.count()).toEqual(1);
+
+      // element(by.css('[ui-sref="tasks.editTask"]')).click();
+      // element(by.model('taskToUpdate.title')).sendKeys('updated title');
+      // element(by.id('editTaskButton')).click();
     });
   });
 
